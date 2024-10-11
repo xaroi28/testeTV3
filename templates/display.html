@@ -1,0 +1,54 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Texto Display</title>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Alinha o conteúdo ao extremo inferior */
+            height: 100vh;
+            margin: 0;
+        }
+        #textOutput {
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+            background-color: red; /* Muda o fundo para vermelho */
+            padding: 20px; /* Aumenta o tamanho do padding */
+            font-size: 400%; /* Aumenta o tamanho do texto em 300% */
+            font-family: 'Roboto', sans-serif; /* Altera a fonte */
+        }
+        #textOutput span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 10s linear infinite;
+            font-size: 100%; /* Mantém o tamanho do texto */
+            color: white; /* Muda o texto para branco */
+        }
+        @keyframes marquee {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+    </style>
+    <script>
+        const socket = io();
+
+        window.onload = () => {
+            const textOutput = document.getElementById('textOutput');
+            textOutput.innerHTML = '<span>O texto aparecerá aqui</span>';  // Texto pré-definido
+
+            socket.on('receive_text', function(data) {
+                textOutput.innerHTML = '<span>' + data.text + '</span>';
+            });
+        };
+    </script>
+</head>
+<body>
+    <h1>Texto em Tempo Real</h1>
+    <div id="textOutput"><span>O texto aparecerá aqui</span></div>
+</body>
+</html>
